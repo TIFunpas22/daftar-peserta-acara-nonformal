@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <!-- Default CSS -->
+    <title>Daftar-peserta</title>
+  </head>
+  <body>
+    <header>
+      <h1 class="text-center mt-3 mb-5 ms-5 me-5" style="font-size: 16px">
+        DAFTAR PESERTA DAN PEMBAYARAN <br />
+        SYUKURAN ANGKATAN <br />
+        TEKNIK INFORMATIKA 22
+        <hr style="height: 2px" />
+      </h1>
+      <img
+        src="img/logo-if-22.jpg"
+        style="width: 250px; border-radius: 50%; display: flex; margin: auto"
+      />
+    </header>
+    <form name="submit-daftar-peserta" class="me-5 ms-5 mt-5">
+      <!-- Alert -->
+      <div
+        style="font-family: arial"
+        class="alert alert-success my-alert text-center d-none"
+        role="alert"
+      >
+        Terima kasih, data anda sudah terkirim :]
+      </div>
+      <!-- NAMA -->
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"
+          ><b>Nama</b></label
+        >
+        <input
+          type="text"
+          name="nama"
+          class="form-control"
+          id="exampleFormControlInput1"
+          placeholder="* isi nama lengkap disini"
+          required
+        />
+      </div>
+      <!-- NRP -->
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"
+          ><b>NRP</b></label
+        >
+        <input
+          type="text"
+          name="nrp"
+          class="form-control"
+          id="exampleFormControlInput1"
+          placeholder="* isi nrp disini"
+          required
+        />
+      </div>
+      <!-- BUKTI BAYAR -->
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label"
+          ><b>Bukti pembayaran</b></label
+        >
+        <input
+          name="bukti pembayaran"
+          class="form-control"
+          type="file"
+          id="formFile"
+        />
+      </div>
+      <!-- Opsi pembayaran -->
+      <hr style="height: 3px" class="mt-5" />
+      <label class="mb-2"
+        ><b>Sudah melakukan pembayaran full atau belum ?</b></label
+      >
+      <input
+        type="text"
+        name="status pembayaran"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="*Jawab sudah / belum"
+        required
+      />
+      <hr style="height: 3px" class="mt-" />
+      <label class="mb-2"
+        ><b>Sudah melakukan pembayaran full atau belum ?</b></label
+      >
+      <input
+        type="text"
+        name="total pembayaran"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="* isi jumlah pembayaran disini ( contoh : Rp.100.00 )"
+        required
+      />
+
+      <!-- Button -->
+      <button
+        type="button submit"
+        class="btn btn-secondary mt-3 mb-3 btn-kirim"
+      >
+        Kirim
+      </button>
+      <button
+        class="btn btn-secondary mt-3 mb-3 btn-loading d-none"
+        type="button"
+        disabled
+      >
+        <span
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        Loading...
+      </button>
+    </form>
+    <!-- Script for Boostrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <!--Script for Gsheets  -->
+    <script>
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbzQ4ylsLMkLYmlvs1-nuq8K0P5X8766BVwhAHTDKlka9dOC7GM8ELCfrnRSEPgR_JX8MA/exec";
+      const form = document.forms["submit-daftar-peserta"];
+      const btnKirim = document.querySelector(".btn-kirim");
+      const btnLoading = document.querySelector(".btn-loading");
+      const myAlert = document.querySelector(".my-alert");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        // ketika tombol submit diklik
+        // tampilkan tombol loading, hilangkan kirim
+        btnLoading.classList.toggle("d-none");
+        btnKirim.classList.toggle("d-none");
+        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+          .then((response) => {
+            // tampilkan kirim, hilangkan loading
+            btnLoading.classList.toggle("d-none");
+            btnKirim.classList.toggle("d-none");
+            // tampilkan alert
+            myAlert.classList.toggle("d-none");
+            // reset
+            form.reset();
+            console.log("Success!", response);
+          })
+          .catch((error) => console.error("Error!", error.message));
+      });
+    </script>
+  </body>
+</html>
